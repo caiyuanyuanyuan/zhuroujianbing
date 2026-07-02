@@ -3,16 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>我是小锹-福来倾情赞助</title>
+<title>我是小锹-福来倾情提供</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
     background-color: #FF00FA;
     font-family: "Microsoft YaHei", sans-serif;
-    overflow: hidden;
-    height: 100vh;
+    /* 优化：禁止横向滚动，允许纵向滚动，不强制锁死视口 */
+    overflow-x: hidden;
+    overflow-y: auto;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
+    /* GPU加速提示，大幅降低动画渲染压力 */
+    will-change: transform;
   }
 
   /* 上部60%区域 */
@@ -134,6 +138,8 @@
     font-size: 80px;
     z-index: 2;
     animation: bounce 1.5s ease-in-out infinite;
+    /* 弹跳动画GPU加速 */
+    will-change: transform;
   }
   @keyframes bounce {
     0%, 100% { transform: translate(-50%, -50%) scale(1); }
@@ -145,6 +151,8 @@
     height: 100%;
     position: relative;
     animation: spin 4s linear infinite;
+    /* 无限旋转GPU加速，核心优化 */
+    will-change: transform;
   }
   @keyframes spin {
     from { transform: rotate(0deg); }
@@ -177,12 +185,14 @@
     font-weight: bold;
     text-align: center;
     animation: pulseColor 2s ease-in-out infinite;
+    will-change: transform, color;
   }
   .fan-code {
     font-size: 26px;
     font-family: "Courier New", monospace;
     animation: pulseColor 2s ease-in-out infinite reverse;
     letter-spacing: 3px;
+    will-change: transform, color;
   }
   @keyframes pulseColor {
     0% { color: #FFFF00; transform: scale(1); }
@@ -222,13 +232,14 @@
     background: #fff;
     color: #FF00FA;
     box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    will-change: transform;
   }
   .btn:hover {
     transform: scale(1.1);
     box-shadow: 0 6px 20px rgba(0,0,0,0.3);
   }
 
-  /* 谢谢你弹窗效果 */
+  /* 谢谢你弹窗效果 - 关键优化：增加opacity隐藏，减少渲染开销 */
   .thank-you {
     position: fixed;
     left: 50%;
@@ -243,9 +254,12 @@
       0 0 30px #FF69B4;
     z-index: 100;
     pointer-events: none;
-    transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55), opacity 0.5s ease;
+    opacity: 0;
+    will-change: transform, opacity;
   }
   .thank-you.show {
+    opacity: 1;
     transform: translate(-50%, -50%) scale(1);
     animation: wiggle 1s ease-in-out infinite 0.5s;
   }
@@ -422,7 +436,7 @@
   </div>
 
   <div class="middle-section">
-    <div class="fan-text">朱苏狠狠做，日日做，夜夜做。</div>
+    <div class="fan-text">朱苏狠狠做，天天做，夜夜做。</div>
     <div class="fan-code">zzxcdsxhjl</div>
   </div>
 
