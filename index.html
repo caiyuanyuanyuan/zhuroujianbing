@@ -41,7 +41,20 @@
     width: 160px;   /* 宽度加大 */
     height: 380px;  /* 高度拉长 */
     position: relative;
+    cursor: pointer; /* 提示可以点击 */
+    transition: transform 0.2s;
   }
+  /* 专属新增：点击棍子时的“大乱斗挥动”动画 */
+  .nunchaku.hit-action {
+    animation: swingStrike 0.4s ease-in-out;
+  }
+  @keyframes swingStrike {
+    0% { transform: rotate(0deg) translateX(0); }
+    30% { transform: rotate(-30deg) translateX(-20px); } /* 蓄力向后退 */
+    70% { transform: rotate(70deg) translateX(180px) translateY(-40px); } /* 狠狠向右前方挥击 */
+    100% { transform: rotate(0deg) translateX(0); }
+  }
+
   .stick {
     width: 24px;    /* 棍子加粗 */
     height: 150px;  /* 棍子拉长 */
@@ -74,6 +87,19 @@
     height: 360px;  /* 高度整体放大 */
     position: relative;
   }
+  /* 专属新增：被棍子敲击时，“铲子害羞闪烁扭动”动画 */
+  .shovel.shy-action {
+    animation: blushFlash 0.6s ease-in-out;
+  }
+  @keyframes blushFlash {
+    0% { transform: scale(1) rotate(0deg); }
+    20% { transform: scale(0.9) rotate(-10deg); }
+    40% { transform: scale(1.15) rotate(10deg); }
+    60% { transform: scale(1.1) rotate(-5deg); }
+    80% { transform: scale(1.05) rotate(5deg); }
+    100% { transform: scale(1) rotate(0deg); }
+  }
+
   .shovel-handle {
     width: 20px;    /* 把手加粗 */
     height: 180px;  /* 把手拉长 */
@@ -97,6 +123,7 @@
     left: 20px;
     border: 4px solid #777;
     box-shadow: 0 8px 15px rgba(0,0,0,0.4);
+    transition: all 0.3s;
   }
   /* 可爱腮红放大 */
   .shovel-head::before,
@@ -109,9 +136,19 @@
     border-radius: 50%;
     top: 35px;
     opacity: 0.8;
+    transition: all 0.2s;
   }
   .shovel-head::before { left: 20px; }
   .shovel-head::after { right: 20px; }
+  
+  /* 专属新增：大乱斗时让腮红变得更红更红 */
+  .shovel.shy-action .shovel-head::before,
+  .shovel.shy-action .shovel-head::after {
+    background: #FF1493 !important;
+    transform: scale(1.6);
+    opacity: 1;
+  }
+
   /* 可爱眼睛放大 */
   .shovel-eyes {
     position: absolute;
@@ -180,6 +217,7 @@
     align-items: center;
     gap: 15px;
     padding: 0 10px;
+    position: relative; /* 为新增弹幕提供定位基准 */
   }
   .fan-text {
     font-size: 38px; /* 字体放大 */
@@ -187,6 +225,7 @@
     text-align: center;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
     animation: pulseColor 2s ease-in-out infinite;
+    z-index: 5; /* 保证原字在弹幕上方 */
   }
   .fan-code {
     font-size: 30px; /* 字体放大 */
@@ -195,6 +234,7 @@
     animation: pulseColor 2s ease-in-out infinite reverse;
     letter-spacing: 4px;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
+    z-index: 5;
   }
   @keyframes pulseColor {
     0% { color: #FFFF00; transform: scale(1); }
@@ -202,6 +242,40 @@
     50% { color: #00FF00; transform: scale(1); }
     75% { color: #FF00FF; transform: scale(1.08); }
     100% { color: #FFFF00; transform: scale(1); }
+  }
+
+  /* 专属新增：“棍铲99” 无限横向滚动弹幕样式 */
+  .danmaku-container {
+    position: absolute;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0.35; /* 半透明效果，作为精致背景暗纹 */
+    font-size: 26px;
+    font-weight: bold;
+  }
+  .danmaku-top { top: -10px; }
+  .danmaku-bottom { bottom: -10px; }
+  
+  .danmaku-track {
+    display: inline-block;
+    animation: marquee 12s linear infinite;
+  }
+  .danmaku-track.reverse {
+    animation: marqueeReverse 12s linear infinite;
+  }
+  /* 黄红交替的高级质感 */
+  .danmaku-track span:nth-child(odd) { color: #FFD700; text-shadow: 1px 1px 2px #000; }
+  .danmaku-track span:nth-child(even) { color: #FF0000; text-shadow: 1px 1px 2px #000; }
+
+  @keyframes marquee {
+    0% { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(-50%, 0, 0); }
+  }
+  @keyframes marqueeReverse {
+    0% { transform: translate3d(-50%, 0, 0); }
+    100% { transform: translate3d(0, 0, 0); }
   }
   
   /* ================= 底部问答区（微调高，内容做大） ================= */
@@ -287,6 +361,14 @@
       width: 8px;
       height: 70px;
     }
+    /* 适配大乱斗手机端位移 */
+    @keyframes swingStrike {
+      0% { transform: rotate(0deg) translateX(0); }
+      30% { transform: rotate(-30deg) translateX(-10px); }
+      70% { transform: rotate(70deg) translateX(90px) translateY(-20px); }
+      100% { transform: rotate(0deg) translateX(0); }
+    }
+
     /* 铲子手机端 */
     .shovel {
       width: 110px;
@@ -334,6 +416,7 @@
     .question { font-size: 30px; }
     .btn { padding: 12px 30px; font-size: 22px; }
     .thank-you { font-size: 54px; }
+    .danmaku-container { font-size: 18px; }
   }
   
   /* 超小屏手机（480px以下）微调，确保不爆框 */
@@ -355,6 +438,13 @@
     .fan-code { font-size: 16px; }
     .question { font-size: 24px; }
     .btn { padding: 10px 24px; font-size: 18px; }
+    
+    @keyframes swingStrike {
+      0% { transform: rotate(0deg) translateX(0); }
+      30% { transform: rotate(-30deg) translateX(-5px); }
+      70% { transform: rotate(70deg) translateX(65px) translateY(-15px); }
+      100% { transform: rotate(0deg) translateX(0); }
+    }
   }
 </style>
 </head>
@@ -362,8 +452,8 @@
   <!-- 上部区域 -->
   <div class="top-section">
     <div class="content-box">
-      <!-- 双截棍（大版） -->
-      <div class="nunchaku">
+      <!-- 双截棍（大版 - 绑定点击大乱斗事件） -->
+      <div class="nunchaku" id="nunchakuBtn" onclick="triggerMelee()">
         <div class="stick top"></div>
         <div class="chain"></div>
         <div class="stick bottom"></div>
@@ -381,7 +471,7 @@
       </div>
       
       <!-- 可爱铲子（大版） -->
-      <div class="shovel">
+      <div class="shovel" id="shovelTarget">
         <div class="shovel-handle"></div>
         <div class="shovel-head">
           <div class="shovel-eyes">•‿•</div>
@@ -392,8 +482,24 @@
   
   <!-- 中部区域 -->
   <div class="middle-section">
+    <!-- 专属新增：上方横向循环滚动弹幕（正向） -->
+    <div class="danmaku-container danmaku-top">
+      <div class="danmaku-track">
+        <span>棍铲99 💛❤️ </span><span>棍铲99 ❤️💛 </span><span>棍铲99 💛❤️ </span><span>棍铲99 ❤️💛 </span>
+        <span>棍铲99 💛❤️ </span><span>棍铲99 ❤️💛 </span><span>棍铲99 💛❤️ </span><span>棍铲99 ❤️💛 </span>
+      </div>
+    </div>
+
     <div class="fan-text">朱苏狠狠做，天天做，夜夜做。</div>
     <div class="fan-code">zzxcdsxhjl</div>
+
+    <!-- 专属新增：下方横向循环滚动弹幕（反向错落） -->
+    <div class="danmaku-container danmaku-bottom">
+      <div class="danmaku-track reverse">
+        <span>棍铲99 ❤️💛 </span><span>棍铲99 💛❤️ </span><span>棍铲99 ❤️💛 </span><span>棍铲99 💛❤️ </span>
+        <span>棍铲99 ❤️💛 </span><span>棍铲99 💛❤️ </span><span>棍铲99 ❤️💛 </span><span>棍铲99 💛❤️ </span>
+      </div>
+    </div>
   </div>
   
   <!-- 底部区域 -->
@@ -409,9 +515,32 @@
   <div class="thank-you" id="thankYou">谢谢你！💖</div>
 
 <script>
+  // 专属新增：“棍铲大乱斗”逻辑核心代码
+  function triggerMelee() {
+    const nunchaku = document.getElementById("nunchakuBtn");
+    const shovel = document.getElementById("shovelTarget");
+    
+    // 防止动画重叠，先移除类
+    nunchaku.classList.remove("hit-action");
+    shovel.classList.remove("shy-action");
+    
+    // 强制触发重绘
+    void nunchaku.offsetWidth;
+    void shovel.offsetWidth;
+    
+    // 棍子挥舞！
+    nunchaku.classList.add("hit-action");
+    
+    // 延时 0.15 秒（等棍子划到右侧击中铲子时），触发铲子害羞闪烁效果
+    setTimeout(() => {
+      shovel.classList.add("shy-action");
+    }, 150);
+  }
+
   function likeNo() {
     alert("我管你喜不喜欢😈");
   }
+  
   function likeYes() {
     const el = document.getElementById("thankYou");
     el.classList.add("show");
