@@ -14,21 +14,22 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    position: relative;
   }
   
-  /* ================= 页面大框架微调（减少整体间隔） ================= */
+  /* ================= 页面大框架 ================= */
   .top-section {
-    height: 52vh; /* 略微压缩高度让整体更紧凑 */
+    height: 52vh;
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
-    padding: 0 40px; /* 让两侧元素往中间靠拢，远离屏幕边缘 */
+    padding: 0 40px;
   }
   
   .content-box {
     width: 100%;
-    max-width: 800px; /* 限制PC端最大宽度，防止离得太开 */
+    max-width: 800px;
     height: 90%;
     display: flex;
     justify-content: space-between;
@@ -36,28 +37,28 @@
     position: relative;
   }
   
-  /* ================= 双截棍（大改版：放大、向内靠） ================= */
+  /* ================= 双截棍 ================= */
   .nunchaku {
-    width: 160px;   /* 宽度加大 */
-    height: 380px;  /* 高度拉长 */
+    width: 160px;
+    height: 380px;
     position: relative;
-    cursor: pointer; /* 提示可以点击 */
-    transition: transform 0.2s;
+    cursor: pointer;
+    transition: transform 0.2s, top 0.5s, left 0.5s;
+    z-index: 10;
   }
-  /* 专属新增：点击棍子时的“大乱斗挥动”动画 */
   .nunchaku.hit-action {
     animation: swingStrike 0.4s ease-in-out;
   }
   @keyframes swingStrike {
     0% { transform: rotate(0deg) translateX(0); }
-    30% { transform: rotate(-30deg) translateX(-20px); } /* 蓄力向后退 */
-    70% { transform: rotate(70deg) translateX(180px) translateY(-40px); } /* 狠狠向右前方挥击 */
+    30% { transform: rotate(-30deg) translateX(-20px); }
+    70% { transform: rotate(70deg) translateX(180px) translateY(-40px); }
     100% { transform: rotate(0deg) translateX(0); }
   }
 
   .stick {
-    width: 24px;    /* 棍子加粗 */
-    height: 150px;  /* 棍子拉长 */
+    width: 24px;
+    height: 150px;
     background: 
       radial-gradient(circle, #444 3px, transparent 3px) 0 0 / 10px 10px,
       linear-gradient(#333, #111);
@@ -70,9 +71,9 @@
   .stick.bottom { bottom: 0; transform: rotate(15deg); transform-origin: top center; }
   .chain {
     position: absolute;
-    top: 145px;     /* 适配新高度 */
+    top: 145px;
     left: 76px;
-    width: 12px;    /* 链条加粗 */
+    width: 12px;
     height: 95px;
     background: 
       radial-gradient(circle, #fff 4px, transparent 4px) 0 0 / 10px 10px,
@@ -81,13 +82,14 @@
     box-shadow: 0 0 8px rgba(255,255,255,0.3);
   }
   
-  /* ================= 可爱铲子（大改版：放大） ================= */
+  /* ================= 可爱铲子 ================= */
   .shovel {
-    width: 180px;   /* 宽度整体放大 */
-    height: 360px;  /* 高度整体放大 */
+    width: 180px;
+    height: 360px;
     position: relative;
+    transition: transform 0.2s, top 0.5s, left 0.5s;
+    z-index: 10;
   }
-  /* 专属新增：被棍子敲击时，“铲子害羞闪烁扭动”动画 */
   .shovel.shy-action {
     animation: blushFlash 0.6s ease-in-out;
   }
@@ -101,8 +103,8 @@
   }
 
   .shovel-handle {
-    width: 20px;    /* 把手加粗 */
-    height: 180px;  /* 把手拉长 */
+    width: 20px;
+    height: 180px;
     background: 
       radial-gradient(circle, #8B4513 3px, transparent 3px) 0 0 / 9px 9px,
       linear-gradient(#A0522D, #8B4513);
@@ -112,8 +114,8 @@
     left: 80px;
   }
   .shovel-head {
-    width: 140px;   /* 铲头放大 */
-    height: 110px;  /* 铲头放大 */
+    width: 140px;
+    height: 110px;
     background: 
       radial-gradient(circle, #C0C0C0 3px, transparent 3px) 0 0 / 10px 10px,
       linear-gradient(#E8E8E8, #A8A8A8);
@@ -125,9 +127,7 @@
     box-shadow: 0 8px 15px rgba(0,0,0,0.4);
     transition: all 0.3s;
   }
-  /* 可爱腮红放大 */
-  .shovel-head::before,
-  .shovel-head::after {
+  .shovel-head::before, .shovel-head::after {
     content: "";
     position: absolute;
     width: 26px;
@@ -141,7 +141,6 @@
   .shovel-head::before { left: 20px; }
   .shovel-head::after { right: 20px; }
   
-  /* 专属新增：大乱斗时让腮红变得更红更红 */
   .shovel.shy-action .shovel-head::before,
   .shovel.shy-action .shovel-head::after {
     background: #FF1493 !important;
@@ -149,7 +148,6 @@
     opacity: 1;
   }
 
-  /* 可爱眼睛放大 */
   .shovel-eyes {
     position: absolute;
     top: 15px;
@@ -161,21 +159,22 @@
     color: #333;
   }
   
-  /* ================= 中间旋转文字（大改版：字号翻倍、黄红交替） ================= */
+  /* ================= 中间旋转文字 ================= */
   .circle-text-wrap {
     position: absolute;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    width: 320px;   /* 扩大容器容纳大字 */
+    width: 320px;
     height: 320px;
+    transition: opacity 0.5s;
   }
   .center-emoji {
     position: absolute;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    font-size: 100px; /* 恶魔颜表情放大 */
+    font-size: 100px;
     z-index: 2;
     animation: bounce 1.2s ease-in-out infinite;
   }
@@ -193,7 +192,6 @@
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
   }
-  /* 核心修改：字号翻倍由 42px -> 84px，黄红交替配色 */
   .rotate-text {
     position: absolute;
     font-size: 84px; 
@@ -201,14 +199,14 @@
     left: 50%;
     top: 50%;
     transform-origin: center center;
-    text-shadow: 3px 3px 0px #000; /* 给大字加个黑色阴影，更具冲击力 */
+    text-shadow: 3px 3px 0px #000;
   }
-  .text-1 { color: #FFD700; transform: translate(-50%, -180px); } /* 我 - 黄 */
-  .text-2 { color: #FF0000; transform: translate(120px, -50%); }  /* 是 - 红 */
-  .text-3 { color: #FFD700; transform: translate(-50%, 100px); }  /* 小 - 黄 */
-  .text-4 { color: #FF0000; transform: translate(-200px, -50%); } /* 锹 - 红 */
+  .text-1 { color: #FFD700; transform: translate(-50%, -180px); }
+  .text-2 { color: #FF0000; transform: translate(120px, -50%); } 
+  .text-3 { color: #FFD700; transform: translate(-50%, 100px); } 
+  .text-4 { color: #FF0000; transform: translate(-200px, -50%); }
   
-  /* ================= 中部文本区（微调高，减少间距） ================= */
+  /* ================= 中部文本区 ================= */
   .middle-section {
     height: 24vh;
     display: flex;
@@ -217,18 +215,18 @@
     align-items: center;
     gap: 15px;
     padding: 0 10px;
-    position: relative; /* 为新增弹幕提供定位基准 */
+    position: relative;
   }
   .fan-text {
-    font-size: 38px; /* 字体放大 */
+    font-size: 38px;
     font-weight: bold;
     text-align: center;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
     animation: pulseColor 2s ease-in-out infinite;
-    z-index: 5; /* 保证原字在弹幕上方 */
+    z-index: 5;
   }
   .fan-code {
-    font-size: 30px; /* 字体放大 */
+    font-size: 30px;
     font-family: "Courier New", monospace;
     font-weight: bold;
     animation: pulseColor 2s ease-in-out infinite reverse;
@@ -244,14 +242,14 @@
     100% { color: #FFFF00; transform: scale(1); }
   }
 
-  /* 专属新增：“棍铲99” 无限横向滚动弹幕样式 */
+  /* 弹幕 */
   .danmaku-container {
     position: absolute;
     width: 100%;
     overflow: hidden;
     white-space: nowrap;
     pointer-events: none;
-    opacity: 0.35; /* 半透明效果，作为精致背景暗纹 */
+    opacity: 0.35;
     font-size: 26px;
     font-weight: bold;
   }
@@ -265,7 +263,6 @@
   .danmaku-track.reverse {
     animation: marqueeReverse 12s linear infinite;
   }
-  /* 黄红交替的高级质感 */
   .danmaku-track span:nth-child(odd) { color: #FFD700; text-shadow: 1px 1px 2px #000; }
   .danmaku-track span:nth-child(even) { color: #FF0000; text-shadow: 1px 1px 2px #000; }
 
@@ -278,7 +275,7 @@
     100% { transform: translate3d(0, 0, 0); }
   }
   
-  /* ================= 底部问答区（微调高，内容做大） ================= */
+  /* ================= 底部问答区 ================= */
   .bottom-section {
     height: 24vh;
     display: flex;
@@ -288,7 +285,7 @@
     gap: 25px;
   }
   .question {
-    font-size: 42px; /* 字体放大 */
+    font-size: 42px;
     font-weight: bold;
     color: #fff;
     text-shadow: 3px 3px 6px rgba(0,0,0,0.5);
@@ -298,8 +295,8 @@
     gap: 80px;
   }
   .btn {
-    padding: 15px 45px; /* 按钮做大 */
-    font-size: 28px;    /* 字体做大 */
+    padding: 15px 45px;
+    font-size: 28px;
     border: none;
     border-radius: 40px;
     cursor: pointer;
@@ -314,24 +311,30 @@
     box-shadow: 0 8px 25px rgba(0,0,0,0.5);
   }
   
-  /* 谢谢你弹窗效果 */
-  .thank-you {
+  /* ================= 各种弹窗效果 ================= */
+  .thank-you, .force-love {
     position: fixed;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%) scale(0);
-    font-size: 90px;
     font-weight: bold;
     color: #fff;
-    text-shadow: 
-      0 0 15px #FFD700,
-      0 0 25px #FFD700,
-      0 0 40px #FF69B4;
     z-index: 100;
     pointer-events: none;
     transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    text-align: center;
+    width: 90%;
   }
-  .thank-you.show {
+  .thank-you {
+    font-size: 90px;
+    text-shadow: 0 0 15px #FFD700, 0 0 25px #FFD700, 0 0 40px #FF69B4;
+  }
+  .force-love {
+    font-size: 70px;
+    text-shadow: 0 0 15px #FF0000, 0 0 30px #000;
+  }
+  
+  .thank-you.show, .force-love.show {
     transform: translate(-50%, -50%) scale(1);
     animation: wiggle 1s ease-in-out infinite 0.5s;
   }
@@ -339,87 +342,127 @@
     0%, 100% { transform: translate(-50%, -50%) rotate(-5deg) scale(1); }
     50% { transform: translate(-50%, -50%) rotate(5deg) scale(1.05); }
   }
+
+  /* ================= 核心重写：零距离魔性纠缠大乱斗动画 ================= */
   
-  /* ================= 手机端精准适配（等比例整体放大） ================= */
+  /* 基础计算：内容盒宽度一般是两边拉开，我们需要让两团元素汇聚在正中心(50%) */
+  /* 让它们零距离交叉重合，并开始疯狂颤抖+360度大风车死缠烂打 */
+  
+  .nunchaku.go-marry {
+    transform-origin: center center;
+    animation: nunchakuChaos 3.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards infinite;
+  }
+  .shovel.go-marry {
+    transform-origin: center center;
+    animation: shovelChaos 3.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards infinite;
+  }
+
+  @keyframes nunchakuChaos {
+    0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+    /* 0.6秒内急不可耐地冲向正中心，和铲子无缝重叠 */
+    18% { transform: translate(calc(50vw - 180px), 0px) rotate(45deg) scale(1.2); }
+    /* 核心纠缠段：高频上下左右位移剧烈颤抖，同时做360度大龙卷风旋转 */
+    24% { transform: translate(calc(50vw - 175px), -15px) rotate(120deg) scale(1.4); }
+    30% { transform: translate(calc(50vw - 185px), 15px) rotate(240deg) scale(1.3); }
+    36% { transform: translate(calc(50vw - 170px), -10px) rotate(380deg) scale(1.5); }
+    42% { transform: translate(calc(50vw - 190px), 20px) rotate(500deg) scale(1.3); }
+    48% { transform: translate(calc(50vw - 175px), -25px) rotate(640deg) scale(1.5); }
+    54% { transform: translate(calc(50vw - 185px), 5px) rotate(780deg) scale(1.4); }
+    60% { transform: translate(calc(50vw - 170px), -5px) rotate(920deg) scale(1.5); }
+    66% { transform: translate(calc(50vw - 180px), 15px) rotate(1060deg) scale(1.3); }
+    72% { transform: translate(calc(50vw - 175px), -20px) rotate(1200deg) scale(1.4); }
+    /* 动作渐渐平息，依旧死死黏在一起 */
+    85% { transform: translate(calc(50vw - 180px), 0px) rotate(1125deg) scale(1.3); }
+    100% { transform: translate(calc(50vw - 180px), 0px) rotate(1125deg) scale(1.2); }
+  }
+
+  @keyframes shovelChaos {
+    0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+    /* 冲向中心，和棍子迎面死死撞在一起 */
+    18% { transform: translate(calc(-50vw + 180px), 0px) rotate(-45deg) scale(1.2); }
+    /* 与棍子同步并反向纠缠，形成两人在一起疯狂厮杀/亲吻的魔性错觉 */
+    24% { transform: translate(calc(-50vw + 185px), 15px) rotate(-150deg) scale(1.4); }
+    30% { transform: translate(calc(-50vw + 175px), -15px) rotate(-270deg) scale(1.3); }
+    36% { transform: translate(calc(-50vw + 190px), 20px) rotate(-390deg) scale(1.5); }
+    42% { transform: translate(calc(-50vw + 170px), -10px) rotate(-530deg) scale(1.3); }
+    48% { transform: translate(calc(-50vw + 185px), 15px) rotate(-670deg) scale(1.5); }
+    54% { transform: translate(calc(-50vw + 175px), -25px) rotate(-810deg) scale(1.4); }
+    60% { transform: translate(calc(-50vw + 190px), 10px) rotate(-950deg) scale(1.5); }
+    66% { transform: translate(calc(-50vw + 170px), -15px) rotate(-1090deg) scale(1.3); }
+    72% { transform: translate(calc(-50vw + 185px), 5px) rotate(-1230deg) scale(1.4); }
+    /* 平息黏连 */
+    85% { transform: translate(calc(-50vw + 180px), 0px) rotate(-1125deg) scale(1.3); }
+    100% { transform: translate(calc(-50vw + 180px), 0px) rotate(-1125deg) scale(1.2); }
+  }
+
+  /* 纠缠时满屏飞的爱心 */
+  .heart-pop {
+    position: fixed;
+    font-size: 55px;
+    pointer-events: none;
+    animation: flyHeart 1.3s ease-out forwards;
+    z-index: 99;
+  }
+  @keyframes flyHeart {
+    0% { transform: translate(-50%, -50%) scale(0.3); opacity: 1; }
+    100% { transform: translate(var(--tx), var(--ty)) scale(1.6) rotate(var(--rot)); opacity: 0; }
+  }
+  
+  /* ================= 手机端精准位移适配 ================= */
   @media screen and (max-width: 768px) {
-    .top-section {
-      padding: 0 20px; /* 手机端也保持内缩，防止靠边 */
-    }
-    /* 双截棍手机端 */
-    .nunchaku {
-      width: 90px;
-      height: 240px;
-    }
-    .stick {
-      width: 16px;
-      height: 90px;
-      left: 37px;
-    }
-    .chain {
-      top: 90px;
-      left: 42px;
-      width: 8px;
-      height: 70px;
-    }
-    /* 适配大乱斗手机端位移 */
+    .top-section { padding: 0 20px; }
+    .nunchaku { width: 90px; height: 240px; }
+    .stick { width: 16px; height: 90px; left: 37px; }
+    .chain { top: 90px; left: 42px; width: 8px; height: 70px; }
     @keyframes swingStrike {
       0% { transform: rotate(0deg) translateX(0); }
       30% { transform: rotate(-30deg) translateX(-10px); }
       70% { transform: rotate(70deg) translateX(90px) translateY(-20px); }
       100% { transform: rotate(0deg) translateX(0); }
     }
-
-    /* 铲子手机端 */
-    .shovel {
-      width: 110px;
-      height: 220px;
-    }
-    .shovel-handle {
-      width: 14px;
-      height: 110px;
-      left: 48px;
-    }
-    .shovel-head {
-      width: 86px;
-      height: 68px;
-      left: 12px;
-      bottom: 30px;
-    }
-    .shovel-head::before, .shovel-head::after {
-      width: 16px;
-      height: 9px;
-      top: 22px;
-    }
-    .shovel-eyes {
-      font-size: 18px;
-      top: 8px;
-    }
-    /* 中间旋转环与大字（手机端翻倍） */
-    .circle-text-wrap {
-      width: 200px;
-      height: 200px;
-    }
-    .center-emoji {
-      font-size: 60px;
-    }
-    .rotate-text {
-      font-size: 52px; /* 手机端字号同步大翻倍 */
-    }
+    .shovel { width: 110px; height: 220px; }
+    .shovel-handle { width: 14px; height: 110px; left: 48px; }
+    .shovel-head { width: 86px; height: 68px; left: 12px; bottom: 30px; }
+    .shovel-head::before, .shovel-head::after { width: 16px; height: 9px; top: 22px; }
+    .shovel-eyes { font-size: 18px; top: 8px; }
+    .circle-text-wrap { width: 200px; height: 200px; }
+    .center-emoji { font-size: 60px; }
+    .rotate-text { font-size: 52px; }
     .text-1 { transform: translate(-50%, -115px); }
     .text-2 { transform: translate(75px, -50%); }
     .text-3 { transform: translate(-50%, 65px); }
     .text-4 { transform: translate(-125px, -50%); }
-    
-    /* 中下部文本 */
     .fan-text { font-size: 24px; }
     .fan-code { font-size: 20px; }
     .question { font-size: 30px; }
     .btn { padding: 12px 30px; font-size: 22px; }
     .thank-you { font-size: 54px; }
+    .force-love { font-size: 44px; }
     .danmaku-container { font-size: 18px; }
+
+    /* 手机端零距离混乱贴贴 */
+    @keyframes nunchakuChaos {
+      0% { transform: translate(0, 0) rotate(0deg); }
+      18% { transform: translate(calc(50vw - 110px), 40px) rotate(45deg); }
+      24% { transform: translate(calc(50vw - 105px), 25px) rotate(160deg) scale(1.3); }
+      38% { transform: translate(calc(50vw - 115px), 50px) rotate(320deg) scale(1.2); }
+      52% { transform: translate(calc(50vw - 100px), 30px) rotate(480deg) scale(1.3); }
+      66% { transform: translate(calc(50vw - 110px), 45px) rotate(640deg) scale(1.2); }
+      85% { transform: translate(calc(50vw - 110px), 40px) rotate(765deg); }
+      100% { transform: translate(calc(50vw - 110px), 40px) rotate(765deg); }
+    }
+    @keyframes shovelChaos {
+      0% { transform: translate(0, 0) rotate(0deg); }
+      18% { transform: translate(calc(-50vw + 110px), 40px) rotate(-45deg); }
+      24% { transform: translate(calc(-50vw + 115px), 55px) rotate(-160deg) scale(1.3); }
+      38% { transform: translate(calc(-50vw + 105px), 30px) rotate(-320deg) scale(1.2); }
+      52% { transform: translate(calc(-50vw + 120px), 50px) rotate(-480deg) scale(1.3); }
+      66% { transform: translate(calc(-50vw + 110px), 35px) rotate(-640deg) scale(1.2); }
+      85% { transform: translate(calc(-50vw + 110px), 40px) rotate(-765deg); }
+      100% { transform: translate(calc(-50vw + 110px), 40px) rotate(-765deg); }
+    }
   }
   
-  /* 超小屏手机（480px以下）微调，确保不爆框 */
   @media screen and (max-width: 480px) {
     .nunchaku { width: 75px; height: 190px; }
     .stick { width: 13px; height: 75px; left: 31px; }
@@ -452,15 +495,15 @@
   <!-- 上部区域 -->
   <div class="top-section">
     <div class="content-box">
-      <!-- 双截棍（大版 - 绑定点击大乱斗事件） -->
+      <!-- 双截棍 -->
       <div class="nunchaku" id="nunchakuBtn" onclick="triggerMelee()">
         <div class="stick top"></div>
         <div class="chain"></div>
         <div class="stick bottom"></div>
       </div>
       
-      <!-- 中间旋转文字（超级加深刻字版、黄红交替） -->
-      <div class="circle-text-wrap">
+      <!-- 中间旋转文字 -->
+      <div class="circle-text-wrap" id="centerText">
         <div class="center-emoji">😈</div>
         <div class="rotate-ring">
           <div class="rotate-text text-1">我</div>
@@ -470,11 +513,11 @@
         </div>
       </div>
       
-      <!-- 可爱铲子（大版） -->
+      <!-- 可爱铲子 -->
       <div class="shovel" id="shovelTarget">
         <div class="shovel-handle"></div>
         <div class="shovel-head">
-          <div class="shovel-eyes">•‿•</div>
+          <div class="shovel-eyes" id="shovelFace">•‿•</div>
         </div>
       </div>
     </div>
@@ -482,7 +525,6 @@
   
   <!-- 中部区域 -->
   <div class="middle-section">
-    <!-- 专属新增：上方横向循环滚动弹幕（正向） -->
     <div class="danmaku-container danmaku-top">
       <div class="danmaku-track">
         <span>棍铲99 💛❤️ </span><span>棍铲99 ❤️💛 </span><span>棍铲99 💛❤️ </span><span>棍铲99 ❤️💛 </span>
@@ -493,7 +535,6 @@
     <div class="fan-text">朱苏狠狠做，天天做，夜夜做。</div>
     <div class="fan-code">zzxcdsxhjl</div>
 
-    <!-- 专属新增：下方横向循环滚动弹幕（反向错落） -->
     <div class="danmaku-container danmaku-bottom">
       <div class="danmaku-track reverse">
         <span>棍铲99 ❤️💛 </span><span>棍铲99 💛❤️ </span><span>棍铲99 ❤️💛 </span><span>棍铲99 💛❤️ </span>
@@ -513,40 +554,95 @@
   
   <!-- 弹窗 -->
   <div class="thank-you" id="thankYou">谢谢你！💖</div>
+  <div class="force-love" id="forceLove">我管你喜不喜欢😈<br>强行锁死！💥</div>
 
 <script>
-  // 专属新增：“棍铲大乱斗”逻辑核心代码
+  let isMarrying = false; 
+
   function triggerMelee() {
+    if(isMarrying) return; 
     const nunchaku = document.getElementById("nunchakuBtn");
     const shovel = document.getElementById("shovelTarget");
     
-    // 防止动画重叠，先移除类
     nunchaku.classList.remove("hit-action");
     shovel.classList.remove("shy-action");
     
-    // 强制触发重绘
     void nunchaku.offsetWidth;
     void shovel.offsetWidth;
     
-    // 棍子挥舞！
     nunchaku.classList.add("hit-action");
     
-    // 延时 0.15 秒（等棍子划到右侧击中铲子时），触发铲子害羞闪烁效果
     setTimeout(() => {
       shovel.classList.add("shy-action");
     }, 150);
   }
 
-  function likeNo() {
-    alert("我管你喜不喜欢😈");
-  }
-  
   function likeYes() {
+    if(isMarrying) return;
     const el = document.getElementById("thankYou");
     el.classList.add("show");
+    setTimeout(() => { el.classList.remove("show"); }, 3000);
+  }
+  
+  function likeNo() {
+    if(isMarrying) return; 
+    isMarrying = true;
+
+    const forcePop = document.getElementById("forceLove");
+    const nunchaku = document.getElementById("nunchakuBtn");
+    const shovel = document.getElementById("shovelTarget");
+    const centerText = document.getElementById("centerText");
+    const shovelFace = document.getElementById("shovelFace");
+
+    forcePop.classList.add("show");
+
     setTimeout(() => {
-      el.classList.remove("show");
-    }, 3000);
+      forcePop.classList.remove("show");
+      
+      centerText.style.opacity = "0.05"; // 几乎完全淡出，给大战腾地方
+      shovelFace.innerText = "＞﹏＜"; // 换上痛苦中带着一丝娇羞的表情
+
+      nunchaku.classList.add("go-marry");
+      shovel.classList.add("go-marry");
+
+      // 伴随着疯狂乱揉，爱心爆裂速度提高一倍！
+      const heartInterval = setInterval(() => {
+        createHeart();
+      }, 70); 
+
+      // 让他们疯狂纠缠 6 秒钟
+      setTimeout(() => {
+        clearInterval(heartInterval);
+        nunchaku.classList.remove("go-marry");
+        shovel.classList.remove("go-marry");
+        centerText.style.opacity = "1";
+        shovelFace.innerText = "•‿•";
+        isMarrying = false;
+      }, 6000);
+
+    }, 1500);
+  }
+
+  function createHeart() {
+    const heart = document.createElement("div");
+    heart.className = "heart-pop";
+    const icons = ["💖", "❤️", "💞", "💋", "💢", "🔥"]; // 混入了愤怒和火花，更显纠缠痛快
+    heart.innerText = icons[Math.floor(Math.random() * icons.length)];
+    
+    heart.style.left = "50%";
+    heart.style.top = "30%";
+    
+    // 四散飞溅的范围加大，速度变快
+    const tx = (Math.random() - 0.5) * 600 + "px";
+    const ty = (Math.random() - 0.5) * 600 - 50 + "px";
+    const rot = (Math.random() - 0.5) * 720 + "deg";
+    
+    heart.style.setProperty("--tx", tx);
+    heart.style.setProperty("--ty", ty);
+    heart.style.setProperty("--rot", rot);
+    
+    document.body.appendChild(heart);
+    setTimeout(() => { heart.remove(); }, 1300);
   }
 </script>
 </body>
