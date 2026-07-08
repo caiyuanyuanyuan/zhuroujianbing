@@ -557,6 +557,18 @@
   <div class="force-love" id="forceLove">我管你喜不喜欢😈<br>强行锁死💥</div>
 
 <script>
+   // BGM 自动播放：用户首次点击页面后开始
+  let bgmStarted = false;
+  function startBgm() {
+    if (bgmStarted) return;
+    bgmStarted = true;
+    const bgm = document.getElementById('bgm');
+    bgm.volume = 0.6; // 音量 0~1，可自己调
+    bgm.play().catch(() => {});
+    document.removeEventListener('click', startBgm);
+  }
+  document.addEventListener('click', startBgm);
+ 
   let isMarrying = false; 
 
   function triggerMelee() {
@@ -644,6 +656,8 @@
     document.body.appendChild(heart);
     setTimeout(() => { heart.remove(); }, 1300);
   }
+ <!-- BGM 背景音乐 -->
+<audio id="bgm" src="zhikanzhewo.ogg" loop preload="auto"></audio>
 </script>
 </body>
 </html>
