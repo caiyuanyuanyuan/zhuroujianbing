@@ -489,6 +489,11 @@
       100% { transform: rotate(0deg) translateX(0); }
     }
   }
+ @media screen and (max-width:768px){
+  #biliIframe{
+    height:300px !important;
+  }
+}
 </style>
 </head>
 <body>
@@ -589,12 +594,24 @@
     }, 150);
   }
 
-  function likeYes() {
+function likeYes() {
     if(isMarrying) return;
     const el = document.getElementById("thankYou");
     el.classList.add("show");
     setTimeout(() => { el.classList.remove("show"); }, 3000);
-  }
+
+    // 填入你拿到的B站嵌入地址
+    const embedUrl = "https://player.bilibili.com/player.html?isOutside=true&aid=116916156898079&bvid=BV1c2NQ6hE1r&cid=39930038086&p=1";
+    document.getElementById('biliIframe').src = embedUrl;
+    document.getElementById('videoModal').style.display = 'flex';
+}
+
+// 新增关闭弹窗函数
+function closeVideoModal(){
+    document.getElementById('videoModal').style.display = 'none';
+    // 清空src，视频停止播放
+    document.getElementById('biliIframe').src = "";
+}
   
   function likeNo() {
     if(isMarrying) return; 
@@ -659,5 +676,12 @@
 
 </script>
 <audio id="bgm" src="zhikanzhewo.ogg" loop preload="auto"></audio>
+ <!-- B站视频弹窗 -->
+<div id="videoModal" style="position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:200;display:none;align-items:center;justify-content:center;padding:16px;">
+  <div style="width:min(960px,100%);position:relative;">
+    <iframe id="biliIframe" width="100%" height="520" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+    <button onclick="closeVideoModal()" style="position:absolute;top:-44px;right:0;background:none;border:none;color:#fff;font-size:32px;cursor:pointer;">✕</button>
+  </div>
+</div>
 </body>
 </html>
