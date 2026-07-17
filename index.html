@@ -1,687 +1,170 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>我是小锹</title>
-<style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    background-color: #FF00FA;
-    font-family: "Microsoft YaHei", sans-serif;
-    overflow: hidden;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    position: relative;
-  }
-  
-  /* ================= 页面大框架 ================= */
-  .top-section {
-    height: 52vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    padding: 0 40px;
-  }
-  
-  .content-box {
-    width: 100%;
-    max-width: 800px;
-    height: 90%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: relative;
-  }
-  
-  /* ================= 双截棍 ================= */
-  .nunchaku {
-    width: 160px;
-    height: 380px;
-    position: relative;
-    cursor: pointer;
-    transition: transform 0.2s, top 0.5s, left 0.5s;
-    z-index: 10;
-  }
-  .nunchaku.hit-action {
-    animation: swingStrike 0.4s ease-in-out;
-  }
-  @keyframes swingStrike {
-    0% { transform: rotate(0deg) translateX(0); }
-    30% { transform: rotate(-30deg) translateX(-20px); }
-    70% { transform: rotate(70deg) translateX(180px) translateY(-40px); }
-    100% { transform: rotate(0deg) translateX(0); }
-  }
-
-  .stick {
-    width: 24px;
-    height: 150px;
-    background: 
-      radial-gradient(circle, #444 3px, transparent 3px) 0 0 / 10px 10px,
-      linear-gradient(#333, #111);
-    border-radius: 12px;
-    position: absolute;
-    left: 68px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.6);
-  }
-  .stick.top { top: 0; transform: rotate(-15deg); transform-origin: bottom center; }
-  .stick.bottom { bottom: 0; transform: rotate(15deg); transform-origin: top center; }
-  .chain {
-    position: absolute;
-    top: 145px;
-    left: 76px;
-    width: 12px;
-    height: 95px;
-    background: 
-      radial-gradient(circle, #fff 4px, transparent 4px) 0 0 / 10px 10px,
-      linear-gradient(#eee, #888);
-    border-radius: 6px;
-    box-shadow: 0 0 8px rgba(255,255,255,0.3);
-  }
-  
-  /* ================= 可爱铲子 ================= */
-  .shovel {
-    width: 180px;
-    height: 360px;
-    position: relative;
-    transition: transform 0.2s, top 0.5s, left 0.5s;
-    z-index: 10;
-  }
-  .shovel.shy-action {
-    animation: blushFlash 0.6s ease-in-out;
-  }
-  @keyframes blushFlash {
-    0% { transform: scale(1) rotate(0deg); }
-    20% { transform: scale(0.9) rotate(-10deg); }
-    40% { transform: scale(1.15) rotate(10deg); }
-    60% { transform: scale(1.1) rotate(-5deg); }
-    80% { transform: scale(1.05) rotate(5deg); }
-    100% { transform: scale(1) rotate(0deg); }
-  }
-
-  .shovel-handle {
-    width: 20px;
-    height: 180px;
-    background: 
-      radial-gradient(circle, #8B4513 3px, transparent 3px) 0 0 / 9px 9px,
-      linear-gradient(#A0522D, #8B4513);
-    border-radius: 10px;
-    position: absolute;
-    top: 0;
-    left: 80px;
-  }
-  .shovel-head {
-    width: 140px;
-    height: 110px;
-    background: 
-      radial-gradient(circle, #C0C0C0 3px, transparent 3px) 0 0 / 10px 10px,
-      linear-gradient(#E8E8E8, #A8A8A8);
-    border-radius: 0 0 70px 70px;
-    position: absolute;
-    bottom: 50px;
-    left: 20px;
-    border: 4px solid #777;
-    box-shadow: 0 8px 15px rgba(0,0,0,0.4);
-    transition: all 0.3s;
-  }
-  .shovel-head::before, .shovel-head::after {
-    content: "";
-    position: absolute;
-    width: 26px;
-    height: 14px;
-    background: #FFB6C1;
-    border-radius: 50%;
-    top: 35px;
-    opacity: 0.8;
-    transition: all 0.2s;
-  }
-  .shovel-head::before { left: 20px; }
-  .shovel-head::after { right: 20px; }
-  
-  .shovel.shy-action .shovel-head::before,
-  .shovel.shy-action .shovel-head::after {
-    background: #FF1493 !important;
-    transform: scale(1.6);
-    opacity: 1;
-  }
-
-  .shovel-eyes {
-    position: absolute;
-    top: 15px;
-    left: 0;
-    right: 0;
-    text-align: center;
-    font-size: 28px;
-    font-weight: bold;
-    color: #333;
-  }
-  
-  /* ================= 中间旋转文字 ================= */
-  .circle-text-wrap {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 320px;
-    height: 320px;
-    transition: opacity 0.5s;
-  }
-  .center-emoji {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 100px;
-    z-index: 2;
-    animation: bounce 1.2s ease-in-out infinite;
-  }
-  @keyframes bounce {
-    0%, 100% { transform: translate(-50%, -50%) scale(1); }
-    50% { transform: translate(-50%, -50%) scale(1.15); }
-  }
-  .rotate-ring {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    animation: spin 5s linear infinite;
-  }
-  @keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-  .rotate-text {
-    position: absolute;
-    font-size: 84px; 
-    font-weight: 900;
-    left: 50%;
-    top: 50%;
-    transform-origin: center center;
-    text-shadow: 3px 3px 0px #000;
-  }
-  .text-1 { color: #FFD700; transform: translate(-50%, -180px); }
-  .text-2 { color: #FF0000; transform: translate(120px, -50%); } 
-  .text-3 { color: #FFD700; transform: translate(-50%, 100px); } 
-  .text-4 { color: #FF0000; transform: translate(-200px, -50%); }
-  
-  /* ================= 中部文本区 ================= */
-  .middle-section {
-    height: 24vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-    padding: 0 10px;
-    position: relative;
-  }
-  .fan-text {
-    font-size: 38px;
-    font-weight: bold;
-    text-align: center;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
-    animation: pulseColor 2s ease-in-out infinite;
-    z-index: 5;
-  }
-  .fan-code {
-    font-size: 30px;
-    font-family: "Courier New", monospace;
-    font-weight: bold;
-    animation: pulseColor 2s ease-in-out infinite reverse;
-    letter-spacing: 4px;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
-    z-index: 5;
-  }
-  @keyframes pulseColor {
-    0% { color: #FFFF00; transform: scale(1); }
-    25% { color: #00FFFF; transform: scale(1.08); }
-    50% { color: #00FF00; transform: scale(1); }
-    75% { color: #FF00FF; transform: scale(1.08); }
-    100% { color: #FFFF00; transform: scale(1); }
-  }
-
-  /* 弹幕 */
-  .danmaku-container {
-    position: absolute;
-    width: 100%;
-    overflow: hidden;
-    white-space: nowrap;
-    pointer-events: none;
-    opacity: 0.35;
-    font-size: 26px;
-    font-weight: bold;
-  }
-  .danmaku-top { top: -10px; }
-  .danmaku-bottom { bottom: -10px; }
-  
-  .danmaku-track {
-    display: inline-block;
-    animation: marquee 12s linear infinite;
-  }
-  .danmaku-track.reverse {
-    animation: marqueeReverse 12s linear infinite;
-  }
-  .danmaku-track span:nth-child(odd) { color: #FFD700; text-shadow: 1px 1px 2px #000; }
-  .danmaku-track span:nth-child(even) { color: #FF0000; text-shadow: 1px 1px 2px #000; }
-
-  @keyframes marquee {
-    0% { transform: translate3d(0, 0, 0); }
-    100% { transform: translate3d(-50%, 0, 0); }
-  }
-  @keyframes marqueeReverse {
-    0% { transform: translate3d(-50%, 0, 0); }
-    100% { transform: translate3d(0, 0, 0); }
-  }
-  
-  /* ================= 底部问答区 ================= */
-  .bottom-section {
-    height: 24vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 25px;
-  }
-  .question {
-    font-size: 42px;
-    font-weight: bold;
-    color: #fff;
-    text-shadow: 3px 3px 6px rgba(0,0,0,0.5);
-  }
-  .btn-group {
-    display: flex;
-    gap: 80px;
-  }
-  .btn {
-    padding: 15px 45px;
-    font-size: 28px;
-    border: none;
-    border-radius: 40px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: all 0.3s;
-    background: #fff;
-    color: #FF00FA;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.4);
-  }
-  .btn:hover {
-    transform: scale(1.15);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.5);
-  }
-  
-  /* ================= 各种弹窗效果 ================= */
-  .thank-you, .force-love {
-    position: fixed;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%) scale(0);
-    font-weight: bold;
-    color: #fff;
-    z-index: 100;
-    pointer-events: none;
-    transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    text-align: center;
-    width: 90%;
-  }
-  .thank-you {
-    font-size: 90px;
-    text-shadow: 0 0 15px #FFD700, 0 0 25px #FFD700, 0 0 40px #FF69B4;
-  }
-  .force-love {
-    font-size: 70px;
-    text-shadow: 0 0 15px #FF0000, 0 0 30px #000;
-  }
-  
-  .thank-you.show, .force-love.show {
-    transform: translate(-50%, -50%) scale(1);
-    animation: wiggle 1s ease-in-out infinite 0.5s;
-  }
-  @keyframes wiggle {
-    0%, 100% { transform: translate(-50%, -50%) rotate(-5deg) scale(1); }
-    50% { transform: translate(-50%, -50%) rotate(5deg) scale(1.05); }
-  }
-
-  /* ================= 核心重写：零距离魔性纠缠大乱斗动画 ================= */
-  
-  /* 基础计算：内容盒宽度一般是两边拉开，我们需要让两团元素汇聚在正中心(50%) */
-  /* 让它们零距离交叉重合，并开始疯狂颤抖+360度大风车死缠烂打 */
-  
-  .nunchaku.go-marry {
-    transform-origin: center center;
-    animation: nunchakuChaos 3.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards infinite;
-  }
-  .shovel.go-marry {
-    transform-origin: center center;
-    animation: shovelChaos 3.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards infinite;
-  }
-
-  @keyframes nunchakuChaos {
-    0% { transform: translate(0, 0) rotate(0deg) scale(1); }
-    /* 0.6秒内急不可耐地冲向正中心，和铲子无缝重叠 */
-    18% { transform: translate(calc(50vw - 180px), 0px) rotate(45deg) scale(1.2); }
-    /* 核心纠缠段：高频上下左右位移剧烈颤抖，同时做360度大龙卷风旋转 */
-    24% { transform: translate(calc(50vw - 175px), -15px) rotate(120deg) scale(1.4); }
-    30% { transform: translate(calc(50vw - 185px), 15px) rotate(240deg) scale(1.3); }
-    36% { transform: translate(calc(50vw - 170px), -10px) rotate(380deg) scale(1.5); }
-    42% { transform: translate(calc(50vw - 190px), 20px) rotate(500deg) scale(1.3); }
-    48% { transform: translate(calc(50vw - 175px), -25px) rotate(640deg) scale(1.5); }
-    54% { transform: translate(calc(50vw - 185px), 5px) rotate(780deg) scale(1.4); }
-    60% { transform: translate(calc(50vw - 170px), -5px) rotate(920deg) scale(1.5); }
-    66% { transform: translate(calc(50vw - 180px), 15px) rotate(1060deg) scale(1.3); }
-    72% { transform: translate(calc(50vw - 175px), -20px) rotate(1200deg) scale(1.4); }
-    /* 动作渐渐平息，依旧死死黏在一起 */
-    85% { transform: translate(calc(50vw - 180px), 0px) rotate(1125deg) scale(1.3); }
-    100% { transform: translate(calc(50vw - 180px), 0px) rotate(1125deg) scale(1.2); }
-  }
-
-  @keyframes shovelChaos {
-    0% { transform: translate(0, 0) rotate(0deg) scale(1); }
-    /* 冲向中心，和棍子迎面死死撞在一起 */
-    18% { transform: translate(calc(-50vw + 180px), 0px) rotate(-45deg) scale(1.2); }
-    /* 与棍子同步并反向纠缠，形成两人在一起疯狂厮杀/亲吻的魔性错觉 */
-    24% { transform: translate(calc(-50vw + 185px), 15px) rotate(-150deg) scale(1.4); }
-    30% { transform: translate(calc(-50vw + 175px), -15px) rotate(-270deg) scale(1.3); }
-    36% { transform: translate(calc(-50vw + 190px), 20px) rotate(-390deg) scale(1.5); }
-    42% { transform: translate(calc(-50vw + 170px), -10px) rotate(-530deg) scale(1.3); }
-    48% { transform: translate(calc(-50vw + 185px), 15px) rotate(-670deg) scale(1.5); }
-    54% { transform: translate(calc(-50vw + 175px), -25px) rotate(-810deg) scale(1.4); }
-    60% { transform: translate(calc(-50vw + 190px), 10px) rotate(-950deg) scale(1.5); }
-    66% { transform: translate(calc(-50vw + 170px), -15px) rotate(-1090deg) scale(1.3); }
-    72% { transform: translate(calc(-50vw + 185px), 5px) rotate(-1230deg) scale(1.4); }
-    /* 平息黏连 */
-    85% { transform: translate(calc(-50vw + 180px), 0px) rotate(-1125deg) scale(1.3); }
-    100% { transform: translate(calc(-50vw + 180px), 0px) rotate(-1125deg) scale(1.2); }
-  }
-
-  /* 纠缠时满屏飞的爱心 */
-  .heart-pop {
-    position: fixed;
-    font-size: 55px;
-    pointer-events: none;
-    animation: flyHeart 1.3s ease-out forwards;
-    z-index: 99;
-  }
-  @keyframes flyHeart {
-    0% { transform: translate(-50%, -50%) scale(0.3); opacity: 1; }
-    100% { transform: translate(var(--tx), var(--ty)) scale(1.6) rotate(var(--rot)); opacity: 0; }
-  }
-  
-  /* ================= 手机端精准位移适配 ================= */
-  @media screen and (max-width: 768px) {
-    .top-section { padding: 0 20px; }
-    .nunchaku { width: 90px; height: 240px; }
-    .stick { width: 16px; height: 90px; left: 37px; }
-    .chain { top: 90px; left: 42px; width: 8px; height: 70px; }
-    @keyframes swingStrike {
-      0% { transform: rotate(0deg) translateX(0); }
-      30% { transform: rotate(-30deg) translateX(-10px); }
-      70% { transform: rotate(70deg) translateX(90px) translateY(-20px); }
-      100% { transform: rotate(0deg) translateX(0); }
-    }
-    .shovel { width: 110px; height: 220px; }
-    .shovel-handle { width: 14px; height: 110px; left: 48px; }
-    .shovel-head { width: 86px; height: 68px; left: 12px; bottom: 30px; }
-    .shovel-head::before, .shovel-head::after { width: 16px; height: 9px; top: 22px; }
-    .shovel-eyes { font-size: 18px; top: 8px; }
-    .circle-text-wrap { width: 200px; height: 200px; }
-    .center-emoji { font-size: 60px; }
-    .rotate-text { font-size: 52px; }
-    .text-1 { transform: translate(-50%, -115px); }
-    .text-2 { transform: translate(75px, -50%); }
-    .text-3 { transform: translate(-50%, 65px); }
-    .text-4 { transform: translate(-125px, -50%); }
-    .fan-text { font-size: 24px; }
-    .fan-code { font-size: 20px; }
-    .question { font-size: 30px; }
-    .btn { padding: 12px 30px; font-size: 22px; }
-    .thank-you { font-size: 54px; }
-    .force-love { font-size: 44px; }
-    .danmaku-container { font-size: 18px; }
-
-    /* 手机端零距离混乱贴贴 */
-    @keyframes nunchakuChaos {
-      0% { transform: translate(0, 0) rotate(0deg); }
-      18% { transform: translate(calc(50vw - 110px), 40px) rotate(45deg); }
-      24% { transform: translate(calc(50vw - 105px), 25px) rotate(160deg) scale(1.3); }
-      38% { transform: translate(calc(50vw - 115px), 50px) rotate(320deg) scale(1.2); }
-      52% { transform: translate(calc(50vw - 100px), 30px) rotate(480deg) scale(1.3); }
-      66% { transform: translate(calc(50vw - 110px), 45px) rotate(640deg) scale(1.2); }
-      85% { transform: translate(calc(50vw - 110px), 40px) rotate(765deg); }
-      100% { transform: translate(calc(50vw - 110px), 40px) rotate(765deg); }
-    }
-    @keyframes shovelChaos {
-      0% { transform: translate(0, 0) rotate(0deg); }
-      18% { transform: translate(calc(-50vw + 110px), 40px) rotate(-45deg); }
-      24% { transform: translate(calc(-50vw + 115px), 55px) rotate(-160deg) scale(1.3); }
-      38% { transform: translate(calc(-50vw + 105px), 30px) rotate(-320deg) scale(1.2); }
-      52% { transform: translate(calc(-50vw + 120px), 50px) rotate(-480deg) scale(1.3); }
-      66% { transform: translate(calc(-50vw + 110px), 35px) rotate(-640deg) scale(1.2); }
-      85% { transform: translate(calc(-50vw + 110px), 40px) rotate(-765deg); }
-      100% { transform: translate(calc(-50vw + 110px), 40px) rotate(-765deg); }
-    }
-  }
-  
-  @media screen and (max-width: 480px) {
-    .nunchaku { width: 75px; height: 190px; }
-    .stick { width: 13px; height: 75px; left: 31px; }
-    .chain { top: 75px; left: 35px; width: 6px; height: 50px; }
-    .shovel { width: 85px; height: 180px; }
-    .shovel-handle { width: 10px; height: 90px; left: 37px; }
-    .shovel-head { width: 70px; height: 55px; left: 7px; bottom: 25px; }
-    .circle-text-wrap { width: 160px; height: 160px; }
-    .center-emoji { font-size: 50px; }
-    .rotate-text { font-size: 44px; }
-    .text-1 { transform: translate(-50%, -95px); }
-    .text-2 { transform: translate(60px, -50%); }
-    .text-3 { transform: translate(-50%, 55px); }
-    .text-4 { transform: translate(-105px, -50%); }
-    .fan-text { font-size: 20px; }
-    .fan-code { font-size: 16px; }
-    .question { font-size: 24px; }
-    .btn { padding: 10px 24px; font-size: 18px; }
-    
-    @keyframes swingStrike {
-      0% { transform: rotate(0deg) translateX(0); }
-      30% { transform: rotate(-30deg) translateX(-5px); }
-      70% { transform: rotate(70deg) translateX(65px) translateY(-15px); }
-      100% { transform: rotate(0deg) translateX(0); }
-    }
-  }
- @media screen and (max-width:768px){
-  #biliIframe{
-    height:300px !important;
-  }
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#d91461">
+  <title>棍铲婚礼现场</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- 上部区域 -->
-  <div class="top-section">
-    <div class="content-box">
-      <!-- 双截棍 -->
-      <div class="nunchaku" id="nunchakuBtn" onclick="triggerMelee()">
-        <div class="stick top"></div>
-        <div class="chain"></div>
-        <div class="stick bottom"></div>
+  <main id="app">
+    <!-- 页面1：开场欢迎页 -->
+    <section id="welcomePage" class="page welcome-page is-active" aria-label="开场欢迎页">
+      <div class="welcome-glow"></div>
+      <div class="welcome-content">
+        <p class="welcome-kicker">ZHU ZHIXIN × SU XINHAO</p>
+        <h1>欢迎参加棍铲的婚礼</h1>
+        <div class="welcome-divider"><span></span><b>♥</b><span></span></div>
+        <p class="welcome-note">婚礼现场即将开启</p>
       </div>
-      
-      <!-- 中间旋转文字 -->
-      <div class="circle-text-wrap" id="centerText">
-        <div class="center-emoji">😈</div>
-        <div class="rotate-ring">
-          <div class="rotate-text text-1">我</div>
-          <div class="rotate-text text-2">是</div>
-          <div class="rotate-text text-3">小</div>
-          <div class="rotate-text text-4">锹</div>
+    </section>
+
+    <!-- 页面2：选择页 -->
+    <section id="choicePage" class="page child-page choice-page" aria-label="婚礼选择页">
+      <div class="choice-card glass-card">
+        <div class="choice-photo-wrap">
+          <img src="合照.jpg" alt="朱志鑫和苏新皓合照" class="choice-photo">
+          <div class="photo-fallback">朱苏合照<br><small>请放入：合照.jpg</small></div>
+        </div>
+        <h2>你愿意参加棍铲的婚礼吗？</h2>
+        <div class="choice-actions">
+          <button id="agreeBtn" class="primary-btn" type="button">愿意</button>
+          <button id="refuseBtn" class="secondary-btn" type="button">不愿意</button>
         </div>
       </div>
-      
-      <!-- 可爱铲子 -->
-      <div class="shovel" id="shovelTarget">
-        <div class="shovel-handle"></div>
-        <div class="shovel-head">
-          <div class="shovel-eyes" id="shovelFace">•‿•</div>
+    </section>
+
+    <!-- 页面3：主功能按钮页 -->
+    <section id="mainPage" class="page child-page main-page" aria-label="主功能页">
+      <div class="hero-photo-wrap">
+        <img src="hezhao.jpg" alt="棍铲婚礼合照" class="hero-photo">
+        <div class="photo-fallback hero-fallback">棍铲婚礼合照<br><small>请放入：hezhao.jpg</small></div>
+        <div class="hero-shade"></div>
+        <div class="hero-copy">
+          <span>朱志鑫 &amp; 苏新皓</span>
+          <h1>我们的婚礼现场</h1>
         </div>
       </div>
+
+      <div class="function-zone">
+        <div class="function-buttons" aria-label="婚礼功能按钮">
+          <button class="round-function-btn" type="button" data-action="about"><span>关于</span><b>我们</b></button>
+          <button class="round-function-btn highlight" type="button" data-action="banquet"><span>进入</span><b>入席</b></button>
+          <button class="round-function-btn" type="button" data-action="bow1"><span>一拜</span><b>天地</b></button>
+          <button class="round-function-btn" type="button" data-action="bow2"><span>二拜</span><b>高堂</b></button>
+          <button class="round-function-btn" type="button" data-action="bow3"><span>夫妻</span><b>对拜</b></button>
+          <button class="round-function-btn" type="button" data-action="end"><span>婚礼</span><b>END</b></button>
+        </div>
+      </div>
+
+      <button id="musicLeftBtn" class="floating-music floating-music-left" type="button" aria-pressed="false">
+        <span class="music-icon">♫</span><span>只看着我</span>
+      </button>
+      <button id="musicRightBtn" class="floating-music floating-music-right" type="button" aria-pressed="false">
+        <span>罗生门</span><span class="music-icon">♫</span>
+      </button>
+
+      <audio id="musicLeft" preload="metadata" loop src="只看着我.mp3"></audio>
+      <audio id="musicRight" preload="metadata" loop src="罗生门.mp3"></audio>
+    </section>
+
+    <!-- 页面4：四个包厢共用宴席视图，数据按 room1-room4 隔离 -->
+    <section id="banquetPage" class="page child-page banquet-page" aria-label="宴席包厢">
+      <button class="back-home-btn" type="button" data-back-main>← 返回</button>
+
+      <nav id="roomSwitcher" class="room-switcher" aria-label="切换包厢"></nav>
+
+      <div class="banquet-layout">
+        <header class="wedding-stage">
+          <div class="stage-lights"><span></span><span></span><span></span><span></span><span></span></div>
+          <div class="stage-content">
+            <p>棍铲婚礼宴席</p>
+            <h2 id="roomTitle">一号主宴席大厅</h2>
+            <div id="syncStatus" class="sync-status" data-state="loading">
+              <span class="sync-dot"></span><span class="sync-text">正在连接座位库…</span>
+            </div>
+          </div>
+          <div class="stage-flowers">🌸　💐　🌸</div>
+        </header>
+
+        <div class="wedding-corridor" aria-label="新人入场走廊">
+          <div class="corridor-carpet"></div>
+          <div class="corridor-lights left"><i></i><i></i><i></i><i></i></div>
+          <div class="corridor-lights right"><i></i><i></i><i></i><i></i></div>
+          <div id="entranceGroup" class="entrance-group" aria-hidden="true">
+            <div class="newlyweds-row">
+              <span class="newlywed cat-head">🐱</span>
+              <span class="newlywed rabbit-head">🐰</span>
+            </div>
+            <div class="devil-row">
+              <span>😈</span><span>😈</span><span>😈
+            </div>
+            <div class="devil-row">
+              <span>😈</span><span>😈</span><span>😈</span><span>😈</span><span>😈</span>
+            </div>
+          </div>
+        </div>
+
+        <div id="tableArea" class="table-area" aria-label="宴席桌位"></div>
+      </div>
+    </section>
+
+    <!-- 页面8：结束页 -->
+    <section id="endPage" class="page child-page end-page" aria-label="婚礼结束页">
+      <button class="back-home-btn" type="button" data-back-main>← 返回</button>
+      <div class="end-card glass-card">
+        <div class="end-hearts">♥ ♥ ♥</div>
+        <h2>我们的婚礼结束啦！</h2>
+        <p>谢谢大家参加！</p>
+        <strong>棍铲狠狠做👊</strong>
+      </div>
+    </section>
+  </main>
+
+  <!-- 通用视频弹窗 -->
+  <div id="videoModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="videoModalTitle">
+    <div class="video-modal-card">
+      <button id="videoCloseIcon" class="modal-close-icon" type="button" aria-label="关闭视频">×</button>
+      <h2 id="videoModalTitle">婚礼视频</h2>
+      <div id="videoFrameWrap" class="video-frame-wrap">
+        <iframe id="douyinFrame" title="抖音婚礼视频" allow="autoplay; fullscreen; encrypted-media; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+        <div id="videoMissing" class="video-missing hidden">
+          <p>这个视频还没有配置独立 ID</p>
+          <small>请在 script.js 顶部的 VIDEO_CONFIG 中替换。</small>
+        </div>
+      </div>
+      <button id="videoCloseBtn" class="modal-main-btn" type="button">看完返回</button>
     </div>
   </div>
-  
-  <!-- 中部区域 -->
-  <div class="middle-section">
-    <div class="danmaku-container danmaku-top">
-      <div class="danmaku-track">
-        <span>棍铲99 💛❤️ </span><span>棍铲99 ❤️💛 </span><span>棍铲99 💛❤️ </span><span>棍铲99 ❤️💛 </span>
-        <span>棍铲99 💛❤️ </span><span>棍铲99 ❤️💛 </span><span>棍铲99 💛❤️ </span><span>棍铲99 ❤️💛 </span>
+
+  <!-- 其他亲友身份选择弹窗 -->
+  <div id="identityModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="identityTitle">
+    <div class="identity-card">
+      <button id="identityClose" class="modal-close-icon dark" type="button" aria-label="关闭身份选择">×</button>
+      <p class="identity-kicker">请选择你的席位身份</p>
+      <h2 id="identityTitle">其他亲友</h2>
+      <div id="identityOptions" class="identity-options"></div>
+      <div id="customIdentityArea" class="custom-identity-area hidden">
+        <label for="customIdentityInput">填写自定义身份</label>
+        <input id="customIdentityInput" type="text" maxlength="12" autocomplete="off" placeholder="最多 12 个字">
+        <button id="customIdentityConfirm" class="modal-main-btn" type="button">确认落座</button>
       </div>
     </div>
+  </div>
 
-    <div class="fan-text">朱苏狠狠做，天天做，夜夜做。</div>
-    <div class="fan-code">zzxcdsxhjl</div>
-
-    <div class="danmaku-container danmaku-bottom">
-      <div class="danmaku-track reverse">
-        <span>棍铲99 ❤️💛 </span><span>棍铲99 💛❤️ </span><span>棍铲99 ❤️💛 </span><span>棍铲99 💛❤️ </span>
-        <span>棍铲99 ❤️💛 </span><span>棍铲99 💛❤️ </span><span>棍铲99 ❤️💛 </span><span>棍铲99 💛❤️ </span>
-      </div>
+  <!-- 通用提示弹窗 -->
+  <div id="messageModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="messageTitle">
+    <div class="message-card glass-card">
+      <div class="message-heart">♥</div>
+      <h2 id="messageTitle">提示</h2>
+      <p id="messageText"></p>
+      <button id="messageOkBtn" class="modal-main-btn" type="button">知道啦</button>
     </div>
   </div>
-  
-  <!-- 底部区域 -->
-  <div class="bottom-section">
-    <div class="question">你喜欢我嘛</div>
-    <div class="btn-group">
-      <button class="btn" onclick="likeYes()">喜欢</button>
-      <button class="btn" onclick="likeNo()">不喜欢</button>
-    </div>
-  </div>
-  
-  <!-- 弹窗 -->
-  <div class="thank-you" id="thankYou">谢谢你！💖</div>
-  <div class="force-love" id="forceLove">我管你喜不喜欢😈<br>强行锁死💥</div>
 
-<script>
-   // BGM 自动播放：用户首次点击页面后开始
-  let bgmStarted = false;
-  function startBgm() {
-    if (bgmStarted) return;
-    bgmStarted = true;
-    const bgm = document.getElementById('bgm');
-    bgm.volume = 0.6; // 音量 0~1，可自己调
-    bgm.play().catch(() => {});
-    document.removeEventListener('click', startBgm);
-  }
-  document.addEventListener('click', startBgm);
- 
-  let isMarrying = false; 
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
-  function triggerMelee() {
-    if(isMarrying) return; 
-    const nunchaku = document.getElementById("nunchakuBtn");
-    const shovel = document.getElementById("shovelTarget");
-    
-    nunchaku.classList.remove("hit-action");
-    shovel.classList.remove("shy-action");
-    
-    void nunchaku.offsetWidth;
-    void shovel.offsetWidth;
-    
-    nunchaku.classList.add("hit-action");
-    
-    setTimeout(() => {
-      shovel.classList.add("shy-action");
-    }, 150);
-  }
-
-function likeYes() {
-    if(isMarrying) return;
-    const el = document.getElementById("thankYou");
-    el.classList.add("show");
-    setTimeout(() => { el.classList.remove("show"); }, 3000);
-
-    // 填入你拿到的B站嵌入地址
-    const embedUrl = "https://player.bilibili.com/player.html?isOutside=true&aid=116916156898079&bvid=BV1c2NQ6hE1r&cid=39930038086&p=1";
-    document.getElementById('biliIframe').src = embedUrl;
-    document.getElementById('videoModal').style.display = 'flex';
-}
-
-// 新增关闭弹窗函数
-function closeVideoModal(){
-    document.getElementById('videoModal').style.display = 'none';
-    // 清空src，视频停止播放
-    document.getElementById('biliIframe').src = "";
-}
-  
-  function likeNo() {
-    if(isMarrying) return; 
-    isMarrying = true;
-
-    const forcePop = document.getElementById("forceLove");
-    const nunchaku = document.getElementById("nunchakuBtn");
-    const shovel = document.getElementById("shovelTarget");
-    const centerText = document.getElementById("centerText");
-    const shovelFace = document.getElementById("shovelFace");
-
-    forcePop.classList.add("show");
-
-    setTimeout(() => {
-      forcePop.classList.remove("show");
-      
-      centerText.style.opacity = "0.05"; // 几乎完全淡出，给大战腾地方
-      shovelFace.innerText = "＞﹏＜"; // 换上痛苦中带着一丝娇羞的表情
-
-      nunchaku.classList.add("go-marry");
-      shovel.classList.add("go-marry");
-
-      // 伴随着疯狂乱揉，爱心爆裂速度提高一倍！
-      const heartInterval = setInterval(() => {
-        createHeart();
-      }, 70); 
-
-      // 让他们疯狂纠缠 6 秒钟
-      setTimeout(() => {
-        clearInterval(heartInterval);
-        nunchaku.classList.remove("go-marry");
-        shovel.classList.remove("go-marry");
-        centerText.style.opacity = "1";
-        shovelFace.innerText = "•‿•";
-        isMarrying = false;
-      }, 6000);
-
-    }, 1500);
-  }
-
-  function createHeart() {
-    const heart = document.createElement("div");
-    heart.className = "heart-pop";
-    const icons = ["💖", "❤️", "💞", "💋", "💢", "🔥"]; // 混入了愤怒和火花，更显纠缠痛快
-    heart.innerText = icons[Math.floor(Math.random() * icons.length)];
-    
-    heart.style.left = "50%";
-    heart.style.top = "30%";
-    
-    // 四散飞溅的范围加大，速度变快
-    const tx = (Math.random() - 0.5) * 600 + "px";
-    const ty = (Math.random() - 0.5) * 600 - 50 + "px";
-    const rot = (Math.random() - 0.5) * 720 + "deg";
-    
-    heart.style.setProperty("--tx", tx);
-    heart.style.setProperty("--ty", ty);
-    heart.style.setProperty("--rot", rot);
-    
-    document.body.appendChild(heart);
-    setTimeout(() => { heart.remove(); }, 1300);
-  }
-
-</script>
-<audio id="bgm" src="zhikanzhewo.ogg" loop preload="auto"></audio>
- <!-- B站视频弹窗 -->
-<div id="videoModal" style="position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:200;display:none;align-items:center;justify-content:center;padding:16px;">
-  <div style="width:min(960px,100%);position:relative;">
-    <iframe id="biliIframe" width="100%" height="520" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
-    <button onclick="closeVideoModal()" style="position:absolute;top:-44px;right:0;background:none;border:none;color:#fff;font-size:32px;cursor:pointer;">✕</button>
-  </div>
-</div>
+  <script src="script.js"></script>
 </body>
 </html>
